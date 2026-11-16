@@ -1,0 +1,12 @@
+# Copyright 2026 Google LLC
+# SPDX-License-Identifier: Apache-2.0
+
+config TEST_INPUT_NPCX_KBD
+	bool
+	default y
+	select INPUT_KBD_MATRIX
+	help
+	  input_npcx_kbd.c is built by the test itself, so select the keyboard
+	  matrix library it depends on.
+
+source "Kconfig.zephyr"

@@ -1,0 +1,12 @@
+# Copyright 2026 Google LLC
+# SPDX-License-Identifier: Apache-2.0
+
+tests:
+  drivers.input.npcx_kbd:
+    platform_allow:
+      - native_sim
+    integration_platforms:
+      - native_sim
+    tags:
+      - drivers
+      - input

@@ -1,0 +1,61 @@
+/*
+ * Copyright 2026 Google LLC
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/ {
+	test_intc: interrupt-controller@e0000000 {
+		compatible = "vnd,intc";
+		reg = <0xe0000000 0x100>;
+		interrupt-controller;
+		#interrupt-cells = <2>;
+	};
+
+	pcc: clock-controller@e0001000 {
+		compatible = "nuvoton,npcx-pcc";
+		reg = <0xe0001000 0x100>;
+		#clock-cells = <3>;
+		clock-frequency = <96000000>;
+		core-prescaler = <1>;
+		apb1-prescaler = <1>;
+		apb2-prescaler = <1>;
+		apb3-prescaler = <1>;
+		pwdwn-ctl-val = <0>;
+	};
+
+	miwu0: miwu@e0002000 {
+		compatible = "nuvoton,npcx-miwu";
+		reg = <0xe0002000 0x100>;
+		index = <0>;
+		#miwu-cells = <2>;
+	};
+
+	npcx-miwus-wui-map {
+		compatible = "nuvoton,npcx-miwu-wui-map";
+
+		wui_ksi0: wui-ksi0 {
+			miwus = <&miwu0 3 0>;
+		};
+		wui_ksi1: wui-ksi1 {
+			miwus = <&miwu0 3 1>;
+		};
+	};
+
+	kbd_pins: kbd-pins {
+	};
+
+	/* KBS registers are mapped at this address by kbs_regs_bottom.c. */
+	kbd: kbd@400a3000 {
+		compatible = "nuvoton,npcx-kbd";
+		reg = <0x400a3000 0x1000>;
+		interrupt-parent = <&test_intc>;
+		interrupts = <5 0>;
+		clocks = <&pcc 1 0 0>;
+		pinctrl-0 = <&kbd_pins>;
+		pinctrl-names = "default";
+		wui-maps = <&wui_ksi0 &wui_ksi1>;
+		row-size = <2>;
+		col-size = <3>;
+	};
+};
